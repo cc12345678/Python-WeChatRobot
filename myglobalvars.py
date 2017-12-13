@@ -19,8 +19,11 @@ IsTransfer = False
 __File_Path = "config/set.dat"
 
 
-# 从本地加载
 def load_vars():
+    """
+    从本地加载变量
+    :return:
+    """
     # 声明全局变量
     global IsAutoReply
     global IsTransfer
@@ -45,8 +48,11 @@ def load_vars():
         IsTransfer = False
 
 
-# 保存到本地
 def save_vars():
+    """
+    变量保存到本地
+    :return:
+    """
     # 声明全局变量
     global IsAutoReply
     global IsTransfer
@@ -60,8 +66,11 @@ def save_vars():
     pickle.dump(_savedict, _file)
 
 
-# 打印变量状态
 def print_vars():
+    """
+    打印变量状态
+    :return:
+    """
     # 声明全局变量
     global IsStop
     global IsAutoReply

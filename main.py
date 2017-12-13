@@ -36,13 +36,20 @@ def reply_text(msg):
         return _user_sender["NickName"] + "您好，我是WeChatRobot！主人现在不在，稍后与您联系。"
 
 
-# 运行微信
 def run_itchat():
+    """
+    运行微信
+    :return:
+    """
     itchat.run()
 
 
-# 处理指令
 def handle_cmd(cmd):
+    """
+    处理指令
+    :param cmd: 输入的指令
+    :return:
+    """
     # 单目指令
     # 退出功能
     if cmd in ("quit", "q"):
@@ -70,6 +77,9 @@ def handle_cmd(cmd):
     # 显示设置数据
     elif cmd in ("showsetdata", "ssd"):
         myglobalvars.print_vars()
+    # 显示好友统计信息
+    elif cmd in ("showfriendstata", "sfs"):
+        print(mywxfuncs.wx_statafriends())
 
     # 多目指令
     _cmds = re.split("\s+", cmd)

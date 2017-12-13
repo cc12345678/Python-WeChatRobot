@@ -4,8 +4,12 @@
 import itchat
 
 
-# 搜索用户
 def wx_getuserinfo(userinfo):
+    """
+    搜索用户
+    :param userinfo: 用户名、昵称或备注
+    :return:
+    """
     # 缩写替代
     if userinfo == "wxb":
         userinfo = "王小白"
@@ -34,8 +38,13 @@ def wx_getuserinfo(userinfo):
                     return None
 
 
-# 根据用户信息发送消息
 def wx_sendmsg(userinfo, msg):
+    """
+    根据用户信息发送消息
+    :param userinfo:用户名、昵称或备注
+    :param msg:发送信息
+    :return:
+    """
     # 获取用户信息
     _user = wx_getuserinfo(userinfo)
     # 判断用户是否有效
@@ -44,3 +53,17 @@ def wx_sendmsg(userinfo, msg):
         print("消息发送完毕")
 
 
+def wx_statafriends():
+    """
+    统计好友信息
+    :return:
+    """
+    # 获取好友信息
+    _friends = itchat.get_friends()
+
+    # 统计好友数
+    _stata_num = len(_friends)
+
+    # 返回统计结果
+    return dict(num=_stata_num,
+                example=_friends[0])

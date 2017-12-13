@@ -93,10 +93,10 @@ if __name__ == "__main__":
     # 加载全局变量
     myglobalvars.load_vars()
 
-    # 登录
+    # 登录微信
     itchat.auto_login(hotReload=True)
 
-    # 后台运行
+    # 后台运行微信
     trd = threading.Thread(target=run_itchat, args=())
     trd.setDaemon(True)
     trd.start()

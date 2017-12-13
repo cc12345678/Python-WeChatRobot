@@ -59,11 +59,21 @@ def wx_statafriends():
     :return:
     """
     # 获取好友信息
-    _friends = itchat.get_friends()
+    _friends = itchat.get_friends(update=True)
 
     # 统计好友数
     _stata_num = len(_friends)
 
+    # 统计好友其他信息
+    _stata_malenum = 0
+    _stata_femalenum = 0
+    for _friend in _friends:
+        if _friend["Sex"] == 1:
+            _stata_malenum += 1
+        else:
+            _stata_femalenum += 1
+
     # 返回统计结果
-    return dict(num=_stata_num,
-                example=_friends[0])
+    return dict(Num=_stata_num,
+                Num_Of_Male=_stata_malenum,
+                Num_Of_Female=_stata_femalenum)

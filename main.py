@@ -101,7 +101,7 @@ if __name__ == "__main__":
     trd.setDaemon(True)
     trd.start()
 
-    # 运行指令解析
+    # 运行指令输入及解析
     while not myglobalvars.IsStop:
         handle_cmd(cmd=input("输入指令："))
 

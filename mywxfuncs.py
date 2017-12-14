@@ -67,13 +67,23 @@ def wx_statafriends():
     # 统计好友其他信息
     _stata_malenum = 0
     _stata_femalenum = 0
+    _stata_provinces = dict()
     for _friend in _friends:
+        # 性别统计
         if _friend["Sex"] == 1:
             _stata_malenum += 1
         else:
             _stata_femalenum += 1
+        # 地区统计
+        _province = _friend["Province"]
+        if _province in _stata_provinces.keys():
+            _stata_provinces[_province] += 1
+        else:
+            _stata_provinces[_province] = 1
 
+    # print(_friends[1])
     # 返回统计结果
-    return dict(Num=_stata_num,
-                Num_Of_Male=_stata_malenum,
-                Num_Of_Female=_stata_femalenum)
+    return {"Num_All": _stata_num,
+            "Num_Male": _stata_malenum,
+            "Num_Female": _stata_femalenum,
+            "Stata_Provincce": _stata_provinces}

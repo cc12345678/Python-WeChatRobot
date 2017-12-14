@@ -2,7 +2,7 @@ import itchat
 from itchat.content import *
 import threading
 import re
-import myglobalvars
+import myvars
 import mywxfuncs
 
 
@@ -15,11 +15,14 @@ def reply_text(msg):
     # 获取主人信息
     _user_yy = mywxfuncs.wx_getuserinfo("NERO-You")
 
+    # 记录最近发信人
+    myvars.LatestMsgUserInfo = _user_sender
+
     # 本地打印
     print("收到信息：%s 【发信人：%s】" % (msg["Text"], _user_sender["NickName"]))
 
     # 转发消息
-    if myglobalvars.IsTransfer:
+    if myvars.IsTransfer:
         if (_user_sender["UserName"] != _user_mm["UserName"]) and (_user_sender["UserName"] != _user_yy["UserName"]):
             # 信息内容
             _send_msg_content = msg["Text"]
@@ -31,7 +34,7 @@ def reply_text(msg):
             itchat.send_msg(_send_msg, toUserName=_send_username)
 
     # 回复消息
-    if myglobalvars.IsAutoReply:
+    if myvars.IsAutoReply:
         # 自动回复
         return _user_sender["NickName"] + "您好，我是WeChatRobot！主人现在不在，稍后与您联系。"
 
@@ -53,30 +56,30 @@ def handle_cmd(cmd):
     # 单目指令
     # 退出功能
     if cmd in ("quit", "q"):
-        myglobalvars.IsStop = True
+        myvars.IsStop = True
     # 设置自动回复
     elif cmd in ("sr", "sr true"):
-        myglobalvars.IsAutoReply = True
-        myglobalvars.save_vars()
-        myglobalvars.print_vars()
+        myvars.IsAutoReply = True
+        myvars.save_vars()
+        myvars.print_vars()
     # 取消自动回复
     elif cmd in ("cr", "sr false"):
-        myglobalvars.IsAutoReply = False
-        myglobalvars.save_vars()
-        myglobalvars.print_vars()
+        myvars.IsAutoReply = False
+        myvars.save_vars()
+        myvars.print_vars()
     # 设置转发
     elif cmd in ("st", "st true"):
-        myglobalvars.IsTransfer = True
-        myglobalvars.save_vars()
-        myglobalvars.print_vars()
+        myvars.IsTransfer = True
+        myvars.save_vars()
+        myvars.print_vars()
     # 取消转发
     elif cmd in ("cr", "st false"):
-        myglobalvars.IsTransfer = False
-        myglobalvars.save_vars()
-        myglobalvars.print_vars()
+        myvars.IsTransfer = False
+        myvars.save_vars()
+        myvars.print_vars()
     # 显示设置数据
     elif cmd in ("showsetdata", "ssd"):
-        myglobalvars.print_vars()
+        myvars.print_vars()
     # 显示好友统计信息
     elif cmd in ("showfriendstata", "sfs"):
         print(mywxfuncs.wx_statafriends())
@@ -91,17 +94,23 @@ def handle_cmd(cmd):
             _user = mywxfuncs.wx_getuserinfo(_cmds[1])
             if _user:
                 print(_user)
+        # 向最近一次来信用户发送消息
+        elif _cmds[0] in ("m", "msg", "sendmsg"):
+            if myvars.LatestMsgUserInfo:
+                print("正在发送信息至%s……" % myvars.LatestMsgUserInfo["NickName"])
+                mywxfuncs.wx_sendmsg(msg=_cmds[1], userdata=myvars.LatestMsgUserInfo)
 
     # 三目
     if len(_cmds) == 3:
         # 根据用户名发送消息
-        if _cmds[0] in ("msg", "sendmsg"):
-            mywxfuncs.wx_sendmsg(userinfo=_cmds[1], msg=_cmds[2])
+        if _cmds[0] in ("m", "msg", "sendmsg"):
+            print("正在发送信息至指定用户……")
+            mywxfuncs.wx_sendmsg(msg=_cmds[2], usermark=_cmds[1])
 
 
 if __name__ == "__main__":
     # 加载全局变量
-    myglobalvars.load_vars()
+    myvars.load_vars()
 
     # 登录微信
     itchat.auto_login(hotReload=True)
@@ -112,7 +121,7 @@ if __name__ == "__main__":
     trd.start()
 
     # 运行指令输入及解析
-    while not myglobalvars.IsStop:
+    while not myvars.IsStop:
         handle_cmd(cmd=input("输入指令："))
 
     # 提示结束

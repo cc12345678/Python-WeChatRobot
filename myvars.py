@@ -5,15 +5,17 @@ import pickle
 import os
 
 
-# 全局变量 - 标记是否停止
-IsStop = False
-
 # 全局变量 - 是否自动回复
 IsAutoReply = False
 
 # 全局变量 - 是否转发
 IsTransfer = False
 
+# 全局变量 - 标记是否停止
+IsStop = False
+
+# 最近一次发信息的好友信息
+LatestMsgUserInfo = None
 
 # 保存文件路径
 __File_Path = "config/set.dat"

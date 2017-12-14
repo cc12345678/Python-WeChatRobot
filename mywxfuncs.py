@@ -38,19 +38,27 @@ def wx_getuserinfo(userinfo):
                     return None
 
 
-def wx_sendmsg(userinfo, msg):
+def wx_sendmsg(msg, userdata=None, usermark=None):
     """
     根据用户信息发送消息
-    :param userinfo:用户名、昵称或备注
     :param msg:发送信息
+    :param userdata:用户数据类
+    :param usermark:用户名、昵称或备注
     :return:
     """
-    # 获取用户信息
-    _user = wx_getuserinfo(userinfo)
+    # 直接获取用户信息
+    if userdata:
+        _user = userdata
+    # 读取用户信息
+    elif usermark:
+        _user = wx_getuserinfo(usermark)
+
     # 判断用户是否有效
     if _user:
         itchat.send_msg(msg, toUserName=_user["UserName"])
         print("消息发送完毕")
+    else:
+        print("用户不存在")
 
 
 def wx_statafriends():
